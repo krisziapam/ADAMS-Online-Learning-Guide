@@ -1,21 +1,62 @@
 const DB = {
   students: [
-    { student_id: "2026-0001", student_name: "Reyes, Ana", email: "ana.reyes@example.com", category_id: "1" },
-    { student_id: "2026-0002", student_name: "Santos, Mark", email: "mark.santos@example.com", category_id: "2" }
+    { student_id: "2026-0001", student_name: "Reyes, Ana", last_name: "Reyes", first_name: "Ana", email: "ana.reyes@example.com", category_id: "1" },
+    { student_id: "2026-0002", student_name: "Santos, Mark", last_name: "Santos", first_name: "Mark", email: "mark.santos@example.com", category_id: "2" },
+    { student_id: "2026-0003", student_name: "Dela Cruz, Mia", last_name: "Dela Cruz", first_name: "Mia", email: "mia.dc@example.com", category_id: "1" }
   ],
+
   student_categories: [
-    { category_id: "1", category_name: "Freshman" },
-    { category_id: "2", category_name: "Transferee" }
+    { category_id: "1", category_name: "Freshman", sort_order: "1" },
+    { category_id: "2", category_name: "Transferee", sort_order: "2" },
+    { category_id: "3", category_name: "Returnee", sort_order: "3" }
   ],
+
+  requirement_types: [
+    { requirement_id: "1", requirement_name: "Birth Certificate", description: "Proof of identity and birth details" },
+    { requirement_id: "2", requirement_name: "Valid ID", description: "Government or school ID" },
+    { requirement_id: "3", requirement_name: "Transcript", description: "Previous academic record" },
+    { requirement_id: "4", requirement_name: "Good Moral", description: "Certificate of good moral character" }
+  ],
+
+  category_requirements: [
+    { category_id: "1", requirement_id: "1" },
+    { category_id: "1", requirement_id: "2" },
+    { category_id: "2", requirement_id: "3" },
+    { category_id: "2", requirement_id: "4" }
+  ],
+
+  student_requirements: [
+    { student_requirement_id: "1", student_id: "2026-0001", requirement_id: "1", status: "SUBMITTED", file_name: "birth.pdf" },
+    { student_requirement_id: "2", student_id: "2026-0001", requirement_id: "2", status: "PENDING", file_name: "" },
+    { student_requirement_id: "3", student_id: "2026-0002", requirement_id: "3", status: "PENDING", file_name: "" },
+    { student_requirement_id: "4", student_id: "2026-0002", requirement_id: "4", status: "SUBMITTED", file_name: "goodmoral.pdf" }
+  ],
+
   users: [
-    { user_id: "1", username: "admin", role: "superadmin" },
-    { user_id: "2", username: "staff1", role: "staff" }
+    { user_id: "1", username: "admin", full_name: "System Administrator", role: "superadmin", is_active: "1" },
+    { user_id: "2", username: "staff1", full_name: "Staff One", role: "staff", is_active: "1" }
+  ],
+
+  documents: [
+    { document_id: "1", student_pk: "2026-0001", document_type: "Admission Form", status: "SUBMITTED", date_submitted: "2026-06-20" },
+    { document_id: "2", student_pk: "2026-0002", document_type: "Transcript", status: "PENDING", date_submitted: "2026-06-20" }
+  ],
+
+  activity_log: [
+    { log_id: "1", username: "admin", action: "ADD", module: "Students", description: "Added student record", log_time: "2026-06-20 08:00:00" },
+    { log_id: "2", username: "staff1", action: "UPLOAD", module: "Requirements", description: "Uploaded document", log_time: "2026-06-20 09:00:00" }
+  ],
+
+  print_logs: [
+    { log_id: "1", ref_no: "PRN-001", student_id: "2026-0001", document_type: "Admission Checklist", printed_by_name: "Staff One", printed_at: "2026-06-20 10:00:00" }
   ]
 };
 
 function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+  const selected = document.getElementById(id);
+  if (selected) selected.classList.add("active");
+  window.scrollTo(0, 0);
 }
 
 function toggleDark() {
@@ -23,37 +64,48 @@ function toggleDark() {
 }
 
 function normalizeText(text) {
-  return (text || "").toLowerCase().replace(/[;`]/g, "").replace(/\s+/g, " ").trim();
+  return (text || "")
+    .toLowerCase()
+    .replace(/[;`]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function checkActivity(button) {
   const box = button.closest("[data-activity]");
-  let total = 0, score = 0;
+  let total = 0;
+  let score = 0;
 
   box.querySelectorAll(".q").forEach(q => {
     total++;
-    let ok = false;
+    let isCorrect = false;
 
     if (q.dataset.answer !== undefined) {
       const checked = q.querySelector("input[type='radio']:checked");
-      ok = checked && checked.value === q.dataset.answer;
+      isCorrect = checked && checked.value === q.dataset.answer;
     }
 
     if (q.dataset.fill !== undefined) {
       const input = q.querySelector("input:not([type='radio'])");
-      ok = normalizeText(input.value) === normalizeText(q.dataset.fill);
+      isCorrect = normalizeText(input.value) === normalizeText(q.dataset.fill);
     }
 
-    let fb = q.querySelector(".fb");
-    if (!fb) {
-      fb = document.createElement("div");
-      fb.className = "fb";
-      q.appendChild(fb);
+    let feedback = q.querySelector(".fb");
+
+    if (!feedback) {
+      feedback = document.createElement("div");
+      feedback.className = "fb";
+      q.appendChild(feedback);
     }
 
-    fb.className = ok ? "fb good" : "fb bad";
-    fb.innerHTML = ok ? "✅ Correct" : "❌ Not yet. Review and try again.";
-    if (ok) score++;
+    if (isCorrect) {
+      score++;
+      feedback.className = "fb good";
+      feedback.innerHTML = "✅ Correct";
+    } else {
+      feedback.className = "fb bad";
+      feedback.innerHTML = "❌ Not yet. Review and try again.";
+    }
   });
 
   box.querySelector(".score").innerHTML =
@@ -61,11 +113,28 @@ function checkActivity(button) {
 }
 
 function makeTable(rows) {
-  if (!rows || rows.length === 0) return "<p>No rows found.</p>";
-  const cols = Object.keys(rows[0]);
-  return "<table><tr>" + cols.map(c => `<th>${c}</th>`).join("") + "</tr>" +
-    rows.map(r => "<tr>" + cols.map(c => `<td>${r[c] ?? ""}</td>`).join("") + "</tr>").join("") +
-    "</table>";
+  if (!rows || rows.length === 0) {
+    return "<p>No rows found.</p>";
+  }
+
+  const columns = Object.keys(rows[0]);
+
+  let html = "<table><tr>";
+  columns.forEach(col => {
+    html += `<th>${col}</th>`;
+  });
+  html += "</tr>";
+
+  rows.forEach(row => {
+    html += "<tr>";
+    columns.forEach(col => {
+      html += `<td>${row[col] ?? ""}</td>`;
+    });
+    html += "</tr>";
+  });
+
+  html += "</table>";
+  return html;
 }
 
 function loadSQL(sql) {
@@ -82,30 +151,127 @@ function clearSQL() {
 }
 
 function runSQL() {
-  const q = normalizeText(document.getElementById("sqlEditor").value);
+  const raw = document.getElementById("sqlEditor").value;
+  const q = normalizeText(raw);
   let output = "";
 
   if (q === "show tables") {
-    output = makeTable(Object.keys(DB).map(name => ({ Tables_in_doc_admission_db: name })));
-  } else if (q === "describe students") {
-    output = makeTable(Object.keys(DB.students[0]).map(field => ({ Field: field, Type: "sample", Key: field.includes("id") ? "KEY" : "" })));
-  } else if (q.includes("count(*)") && q.includes("students")) {
+    output = makeTable(Object.keys(DB).map(name => ({
+      Tables_in_doc_admission_db: name
+    })));
+  }
+
+  else if (q.startsWith("describe ")) {
+    const tableName = q.replace("describe ", "").trim();
+
+    if (DB[tableName] && DB[tableName].length > 0) {
+      output = makeTable(Object.keys(DB[tableName][0]).map(field => ({
+        Field: field,
+        Type: "sample",
+        Key: field.includes("id") ? "KEY" : ""
+      })));
+    } else {
+      output = "<p>Table not found in sample ADAMS database.</p>";
+    }
+  }
+
+  else if (q.includes("count(*)") && q.includes("students")) {
     output = makeTable([{ total_students: DB.students.length }]);
-  } else if (q.includes("from users")) {
+  }
+
+  else if (q.includes("from users")) {
     output = makeTable(DB.users);
-  } else if (q.includes("from students") && q.includes("student_categories")) {
-    output = makeTable(DB.students.map(s => {
-      const c = DB.student_categories.find(x => x.category_id === s.category_id) || {};
-      return { student_id: s.student_id, student_name: s.student_name, category_name: c.category_name || "" };
-    }));
-  } else if (q.includes("from students")) {
+  }
+
+  else if (q.includes("from students") && q.includes("student_categories")) {
+    const joined = DB.students.map(student => {
+      const category = DB.student_categories.find(c => c.category_id === student.category_id) || {};
+
+      return {
+        student_id: student.student_id,
+        student_name: student.student_name,
+        email: student.email,
+        category_name: category.category_name || ""
+      };
+    });
+
+    output = makeTable(joined);
+  }
+
+  else if (q.includes("from category_requirements")) {
+    const joined = DB.category_requirements.map(cr => {
+      const category = DB.student_categories.find(c => c.category_id === cr.category_id) || {};
+      const requirement = DB.requirement_types.find(r => r.requirement_id === cr.requirement_id) || {};
+
+      return {
+        category_name: category.category_name || "",
+        requirement_name: requirement.requirement_name || "",
+        description: requirement.description || ""
+      };
+    });
+
+    output = makeTable(joined);
+  }
+
+  else if (q.includes("from students") && q.includes("student_requirements")) {
+    const joined = DB.student_requirements.map(sr => {
+      const student = DB.students.find(s => s.student_id === sr.student_id) || {};
+      const requirement = DB.requirement_types.find(r => r.requirement_id === sr.requirement_id) || {};
+
+      return {
+        student_id: student.student_id || "",
+        student_name: student.student_name || "",
+        requirement_name: requirement.requirement_name || "",
+        status: sr.status,
+        file_name: sr.file_name
+      };
+    });
+
+    output = makeTable(joined);
+  }
+
+  else if (q.includes("from students")) {
     output = makeTable(DB.students);
-  } else if (q.includes("from student_categories")) {
+  }
+
+  else if (q.includes("from student_categories")) {
     output = makeTable(DB.student_categories);
-  } else if (q.startsWith("insert") || q.startsWith("update") || q.startsWith("delete")) {
-    output = "<div class='note'><b>Practice only:</b> This TryIt does not change sample data. In real MySQL, run SELECT first before UPDATE/DELETE.</div>";
-  } else {
-    output = "<p>This TryIt recognizes common ADAMS SQL examples. Try SHOW TABLES, DESCRIBE students, SELECT * FROM students, or JOIN category.</p>";
+  }
+
+  else if (q.includes("from requirement_types")) {
+    output = makeTable(DB.requirement_types);
+  }
+
+  else if (q.includes("from documents")) {
+    output = makeTable(DB.documents);
+  }
+
+  else if (q.includes("from activity_log")) {
+    output = makeTable(DB.activity_log);
+  }
+
+  else if (q.includes("from print_logs")) {
+    output = makeTable(DB.print_logs);
+  }
+
+  else if (
+    q.startsWith("insert") ||
+    q.startsWith("update") ||
+    q.startsWith("delete")
+  ) {
+    output = `
+      <div class="note">
+        <b>Practice only:</b> This TryIt does not change sample data.
+        In real MySQL, always run SELECT first before UPDATE or DELETE.
+      </div>
+    `;
+  }
+
+  else {
+    output = `
+      <p>This offline TryIt recognizes common ADAMS SQL examples.</p>
+      <p>Try: <code>SHOW TABLES;</code>, <code>DESCRIBE students;</code>, <code>SELECT * FROM students;</code>, or the JOIN buttons.</p>
+    `;
   }
 
   document.getElementById("sqlResult").innerHTML = output;
@@ -115,7 +281,12 @@ const quiz = [
   ["What is ADAMS focused on?", ["Admission documents and records", "Payroll", "Inventory"], 0],
   ["Final login users are:", ["Superadmin and Staff", "Students only", "Parents"], 0],
   ["1NF fixes:", ["Repeating groups", "Logs", "Passwords only"], 0],
+  ["2NF separates:", ["Core tables by purpose", "Only colors", "Only print button"], 0],
+  ["3NF separates:", ["Supporting/indirect data", "Only students", "Only UI"], 0],
+  ["Bridge table is:", ["category_requirements", "users", "print_logs"], 0],
   ["ERD means:", ["Entity Relationship Diagram", "External Report Design", "Entry Review Data"], 0],
+  ["Crow's foot means:", ["Many", "One", "No relationship"], 0],
+  ["DESCRIBE does what?", ["Checks table structure", "Deletes table", "Prints report"], 0],
   ["WHERE is used to:", ["Filter rows", "Group records", "Create database"], 0]
 ];
 
@@ -123,21 +294,30 @@ function renderQuiz() {
   const box = document.getElementById("quizBox");
   if (!box) return;
 
-  box.innerHTML = quiz.map((q, i) => `
-    <div class="q">
-      <p><b>${i + 1}. ${q[0]}</b></p>
-      ${q[1].map((a, j) => `
-        <label><input type="radio" name="quiz${i}" value="${j}"> ${a}</label>
-      `).join("")}
-    </div>
-  `).join("");
+  box.innerHTML = quiz.map((q, i) => {
+    return `
+      <div class="q">
+        <p><b>${i + 1}. ${q[0]}</b></p>
+        ${q[1].map((answer, j) => `
+          <label>
+            <input type="radio" name="quiz${i}" value="${j}">
+            ${answer}
+          </label>
+        `).join("")}
+      </div>
+    `;
+  }).join("");
 }
 
 function checkQuiz() {
   let score = 0;
+
   quiz.forEach((q, i) => {
     const selected = document.querySelector(`input[name="quiz${i}"]:checked`);
-    if (selected && Number(selected.value) === q[2]) score++;
+
+    if (selected && Number(selected.value) === q[2]) {
+      score++;
+    }
   });
 
   document.getElementById("quizScore").innerHTML =
@@ -153,10 +333,13 @@ document.getElementById("searchBox").addEventListener("input", function () {
   const term = this.value.toLowerCase().trim();
   if (!term) return;
 
-  const found = [...document.querySelectorAll(".page")]
-    .find(page => page.innerText.toLowerCase().includes(term));
+  const found = [...document.querySelectorAll(".page")].find(page =>
+    page.innerText.toLowerCase().includes(term)
+  );
 
-  if (found) showPage(found.id);
+  if (found) {
+    showPage(found.id);
+  }
 });
 
 renderQuiz();
