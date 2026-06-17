@@ -7,366 +7,510 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand"><span>ADAMS</span> Academy</div>
+    <input id="searchBox" type="text" placeholder="Search ADAMS, SQL, ERD, EERD, Normalization..." />
+    <button id="darkBtn" type="button">Dark</button>
+  </header>
 
-<header class="topbar">
-  <div class="brand"><span>ADAMS</span> Academy</div>
-  <input id="searchBox" type="text" placeholder="Search ADAMS, SQL, ERD, EERD, Normalization..." />
-  <button onclick="toggleDark()">Dark</button>
-</header>
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>Course Menu</h3>
+      <button data-page="home" class="nav-btn active">Start Here</button>
+      <button data-page="overview" class="nav-btn">ADAMS Overview</button>
+      <button data-page="dbms" class="nav-btn">DBMS & MySQL</button>
+      <button data-page="objects" class="nav-btn">Tables, Keys, Records</button>
+      <button data-page="relationships" class="nav-btn">Relationships</button>
+      <button data-page="erd" class="nav-btn">ERD / EERD</button>
+      <button data-page="normalization" class="nav-btn">Normalization</button>
+      <button data-page="anomalies" class="nav-btn">Data Anomalies</button>
+      <button data-page="schema" class="nav-btn">ADAMS Tables</button>
+      <button data-page="sql-lessons" class="nav-btn">SQL Lessons</button>
+      <button data-page="sql-tryit" class="nav-btn">SQL TryIt</button>
+      <button data-page="defense" class="nav-btn">Defense Q&A</button>
+      <button data-page="quiz" class="nav-btn">Quiz</button>
+      <button data-page="github" class="nav-btn">GitHub Guide</button>
+    </aside>
 
-<div class="layout">
-  <aside class="sidebar">
-    <h3>Course Menu</h3>
-    <button onclick="showPage('home')">Start Here</button>
-    <button onclick="showPage('overview')">ADAMS Overview</button>
-    <button onclick="showPage('dbms')">DBMS & MySQL</button>
-    <button onclick="showPage('objects')">Tables, Keys, Records</button>
-    <button onclick="showPage('relationships')">Relationships</button>
-    <button onclick="showPage('erd')">ERD / EERD</button>
-    <button onclick="showPage('normalization')">Normalization</button>
-    <button onclick="showPage('schema')">ADAMS Tables</button>
-    <button onclick="showPage('sql')">SQL Lessons</button>
-    <button onclick="showPage('tryit')">SQL TryIt</button>
-    <button onclick="showPage('defense')">Defense Q&A</button>
-    <button onclick="showPage('quiz')">Quiz</button>
-    <button onclick="showPage('github')">GitHub Guide</button>
-  </aside>
-
-  <main class="content">
-
-    <section id="home" class="page active">
-      <div class="hero">
-        <h1>ADAMS Online Learning Guide</h1>
-        <p>A W3Schools-style reviewer for your ADAMS database/system defense.</p>
-        <button onclick="showPage('overview')">Start Learning</button>
-        <button onclick="showPage('tryit')">Open SQL TryIt</button>
-      </div>
-
-      <div class="cards">
-        <div class="card">
-          <h3>Understand</h3>
-          <p>Learn ADAMS, DBMS, SQL, ERD, EERD, and normalization in simple lessons.</p>
-        </div>
-        <div class="card">
-          <h3>Practice</h3>
-          <p>Activities show if your answers are correct or not.</p>
-        </div>
-        <div class="card">
-          <h3>Defend</h3>
-          <p>Use direct defense lines for panel questions.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="overview" class="page">
-      <h1>ADAMS System Overview</h1>
-      <p><b>ADAMS</b> is a database-driven admission document management system. It manages admission documents and applicant/student records using a relational database.</p>
-
-      <div class="defense">
-        <b>Defense line:</b> ADAMS helps the office record, search, monitor, print, and archive admission records through a database-driven system.
-      </div>
-
-      <h2>Final User Roles</h2>
-      <table>
-        <tr><th>Role / Record Type</th><th>Meaning</th></tr>
-        <tr><td>Superadmin</td><td>Manages system-wide accounts, settings, categories, requirements, logs, and reports.</td></tr>
-        <tr><td>Staff</td><td>Handles searching, updating, uploading, monitoring, printing, and archiving.</td></tr>
-        <tr><td>Student/Applicant</td><td>Admission record only, not a final login role.</td></tr>
-      </table>
-
-      <h2>Main ADAMS Features</h2>
-      <ul>
-        <li>Record applicant/student information.</li>
-        <li>Manage student categories and requirement checklists.</li>
-        <li>Upload and monitor admission documents.</li>
-        <li>Search, print, verify, and archive records.</li>
-        <li>Track users, logs, print history, password resets, and archived students.</li>
-      </ul>
-
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
-
-        <div class="q" data-answer="0">
-          <p>Who are the final login users in ADAMS?</p>
-          <label><input type="radio" name="ov1" value="0"> Superadmin and Staff</label>
-          <label><input type="radio" name="ov1" value="1"> Students and Parents</label>
-          <label><input type="radio" name="ov1" value="2"> Applicants only</label>
+    <main class="content">
+      <section id="home" class="page active">
+        <div class="hero">
+          <h1>ADAMS Online Learning Guide</h1>
+          <p>A clean W3Schools-style reviewer for your ADAMS database/system defense.</p>
+          <div class="hero-actions">
+            <button data-page="overview" class="go-btn">Start Learning</button>
+            <button data-page="sql-tryit" class="go-btn secondary">Open SQL TryIt</button>
+          </div>
         </div>
 
-        <div class="q" data-answer="1">
-          <p>Student/Applicant is treated as:</p>
-          <label><input type="radio" name="ov2" value="0"> Final login user</label>
-          <label><input type="radio" name="ov2" value="1"> Admission record</label>
-          <label><input type="radio" name="ov2" value="2"> Database administrator</label>
+        <div class="cards">
+          <article class="card">
+            <h3>Understand</h3>
+            <p>Learn ADAMS, DBMS, SQL, ERD, EERD, cardinality, and normalization in simple lessons.</p>
+          </article>
+          <article class="card">
+            <h3>Practice</h3>
+            <p>Every major lesson includes activities with instant correct/incorrect checking.</p>
+          </article>
+          <article class="card">
+            <h3>Defend</h3>
+            <p>Use direct defense lines, panel Q&A, and SQL examples for your oral defense.</p>
+          </article>
         </div>
 
-        <div class="q" data-fill="archive">
-          <p>Complete: ADAMS helps the office record, search, monitor, print, and ______ admission records.</p>
-          <input type="text" placeholder="Type answer" />
+        <div class="note">
+          <b>Defense formula:</b> Definition + ADAMS example. Example: A primary key uniquely identifies each record. In ADAMS, <code>students.student_id</code> identifies each student.
+        </div>
+      </section>
+
+      <section id="overview" class="page">
+        <h1>ADAMS System Overview</h1>
+        <p><b>ADAMS</b> is a database-driven admission document management system. It manages admission documents and applicant/student records using a relational database.</p>
+
+        <div class="defense">
+          <b>Defense line:</b> ADAMS helps the office record, search, monitor, print, and archive admission records through a database-driven system.
         </div>
 
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
+        <h2>Final User Roles</h2>
+        <table>
+          <thead>
+            <tr><th>Role / Record Type</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Superadmin</td><td>Manages system-wide accounts, settings, categories, requirements, logs, and reports.</td></tr>
+            <tr><td>Staff</td><td>Handles searching, updating, uploading, monitoring, printing, and archiving subject to granted access.</td></tr>
+            <tr><td>Student/Applicant</td><td>Admission record only, not a final login role.</td></tr>
+          </tbody>
+        </table>
 
-    <section id="dbms" class="page">
-      <h1>DBMS and MySQL Foundations</h1>
+        <h2>Main ADAMS Features</h2>
+        <ul>
+          <li>Record applicant/student information.</li>
+          <li>Manage student categories and requirement checklists.</li>
+          <li>Upload and monitor admission documents.</li>
+          <li>Search, print, verify, and archive records.</li>
+          <li>Track users, activity logs, print history, password resets, and archived students.</li>
+        </ul>
 
-      <table>
-        <tr><th>Concept</th><th>Meaning</th><th>ADAMS Example</th></tr>
-        <tr><td>Database</td><td>Organized collection of related data.</td><td>Applicant records, requirements, users, logs, archives.</td></tr>
-        <tr><td>DBMS</td><td>Software used to create, manage, secure, and retrieve records.</td><td>MySQL/MariaDB manages ADAMS.</td></tr>
-        <tr><td>RDBMS</td><td>Relational Database Management System.</td><td>ADAMS uses related tables and keys.</td></tr>
-        <tr><td>SQL</td><td>Structured Query Language.</td><td>SELECT, INSERT, UPDATE, DELETE, JOIN.</td></tr>
-      </table>
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
 
-      <div class="defense">
-        <b>Defense line:</b> ADAMS is a database project because its main features depend on tables, keys, relationships, and SQL queries.
-      </div>
+          <div class="q" data-answer="0">
+            <p>Who are the final login users in ADAMS?</p>
+            <label><input type="radio" name="ov1" value="0"> Superadmin and Staff</label>
+            <label><input type="radio" name="ov1" value="1"> Students and Parents</label>
+            <label><input type="radio" name="ov1" value="2"> Applicants only</label>
+          </div>
 
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
+          <div class="q" data-answer="1">
+            <p>Student/Applicant is treated as:</p>
+            <label><input type="radio" name="ov2" value="0"> Final login user</label>
+            <label><input type="radio" name="ov2" value="1"> Admission record</label>
+            <label><input type="radio" name="ov2" value="2"> Database administrator</label>
+          </div>
 
-        <div class="q" data-answer="1">
-          <p>What type of DBMS is MySQL?</p>
-          <label><input type="radio" name="db1" value="0"> NoSQL only</label>
-          <label><input type="radio" name="db1" value="1"> RDBMS</label>
-          <label><input type="radio" name="db1" value="2"> Spreadsheet</label>
+          <div class="q" data-fill="archive">
+            <p>Complete: ADAMS helps the office record, search, monitor, print, and ______ admission records.</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
+
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
+        </div>
+      </section>
+
+      <section id="dbms" class="page">
+        <h1>DBMS and MySQL Foundations</h1>
+
+        <table>
+          <thead>
+            <tr><th>Concept</th><th>Meaning</th><th>ADAMS Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Database</td><td>Organized collection of related data.</td><td>Applicant records, requirement status, user accounts, logs, and archives.</td></tr>
+            <tr><td>DBMS</td><td>Software used to create, manage, secure, and retrieve records from a database.</td><td>MySQL/MariaDB manages the ADAMS database.</td></tr>
+            <tr><td>RDBMS</td><td>Relational Database Management System.</td><td>ADAMS uses related tables connected by keys.</td></tr>
+            <tr><td>SQL</td><td>Structured Query Language.</td><td>Used for SELECT, INSERT, UPDATE, DELETE, and JOIN.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="defense">
+          <b>Defense line:</b> ADAMS is a database project because its main features depend on tables, keys, relationships, and SQL queries.
         </div>
 
-        <div class="q" data-fill="language">
-          <p>SQL means Structured Query ______.</p>
-          <input type="text" placeholder="Type answer" />
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
+
+          <div class="q" data-answer="1">
+            <p>What type of DBMS is MySQL?</p>
+            <label><input type="radio" name="db1" value="0"> NoSQL only</label>
+            <label><input type="radio" name="db1" value="1"> RDBMS</label>
+            <label><input type="radio" name="db1" value="2"> Spreadsheet</label>
+          </div>
+
+          <div class="q" data-answer="0">
+            <p>Why is ADAMS considered a database project?</p>
+            <label><input type="radio" name="db2" value="0"> It depends on tables, keys, relationships, and SQL queries.</label>
+            <label><input type="radio" name="db2" value="1"> It is only a static form.</label>
+            <label><input type="radio" name="db2" value="2"> It only changes colors.</label>
+          </div>
+
+          <div class="q" data-fill="language">
+            <p>SQL means Structured Query ______.</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
+
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
+        </div>
+      </section>
+
+      <section id="objects" class="page">
+        <h1>Tables, Keys, Records</h1>
+
+        <table>
+          <thead>
+            <tr><th>Object</th><th>Meaning</th><th>ADAMS Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Table</td><td>Stores related data in rows and columns.</td><td><code>students</code></td></tr>
+            <tr><td>Column / Field</td><td>One data attribute.</td><td><code>first_name</code>, <code>email</code>, <code>category_id</code></td></tr>
+            <tr><td>Row / Record</td><td>One complete entry.</td><td>One applicant row in <code>students</code>.</td></tr>
+            <tr><td>Primary Key</td><td>Uniquely identifies each record.</td><td><code>students.student_id</code></td></tr>
+            <tr><td>Foreign Key</td><td>Links one table to another.</td><td><code>students.category_id</code></td></tr>
+            <tr><td>Unique Key</td><td>Prevents duplicate values.</td><td><code>users.username</code></td></tr>
+            <tr><td>Referential Integrity</td><td>Keeps table relationships valid and consistent.</td><td>A student category must exist before assigning it to a student.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
+
+          <div class="q" data-answer="0">
+            <p>Which is a primary key example?</p>
+            <label><input type="radio" name="obj1" value="0"> students.student_id</label>
+            <label><input type="radio" name="obj1" value="1"> student_name</label>
+            <label><input type="radio" name="obj1" value="2"> email only</label>
+          </div>
+
+          <div class="q" data-answer="1">
+            <p>Which key links one table to another?</p>
+            <label><input type="radio" name="obj2" value="0"> Primary key</label>
+            <label><input type="radio" name="obj2" value="1"> Foreign key</label>
+            <label><input type="radio" name="obj2" value="2"> Password</label>
+          </div>
+
+          <div class="q" data-fill="columns">
+            <p>A table stores related data in rows and ______.</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
+
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
+        </div>
+      </section>
+
+      <section id="relationships" class="page">
+        <h1>Business Rules and Relationships</h1>
+        <p>Business rules describe how records relate based on the actual process of the organization.</p>
+
+        <table>
+          <thead>
+            <tr><th>ADAMS Business Rule</th><th>Relationship</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Each student/applicant belongs to one student category.</td><td><code>student_categories</code> → <code>students</code> = 1:M</td></tr>
+            <tr><td>Different categories may require different documents.</td><td><code>student_categories</code> ↔ <code>requirement_types</code> = M:N</td></tr>
+            <tr><td>Category requirements are handled by a bridge table.</td><td><code>category_requirements</code></td></tr>
+            <tr><td>Actual requirement status is stored per student.</td><td><code>student_requirements</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="defense">
+          <b>Defense line:</b> The <code>category_requirements</code> table connects <code>student_categories</code> and <code>requirement_types</code> to handle different document checklists per category.
         </div>
 
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
 
-    <section id="objects" class="page">
-      <h1>Tables, Keys, Records</h1>
+          <div class="q" data-answer="0">
+            <p><code>student_categories</code> to <code>students</code> is:</p>
+            <label><input type="radio" name="rel1" value="0"> One-to-many</label>
+            <label><input type="radio" name="rel1" value="1"> Many-to-many only</label>
+            <label><input type="radio" name="rel1" value="2"> No relationship</label>
+          </div>
 
-      <table>
-        <tr><th>Object</th><th>Meaning</th><th>ADAMS Example</th></tr>
-        <tr><td>Table</td><td>Stores related data in rows and columns.</td><td>students</td></tr>
-        <tr><td>Column / Field</td><td>One data attribute.</td><td>first_name, email, category_id</td></tr>
-        <tr><td>Row / Record</td><td>One complete entry.</td><td>One applicant row.</td></tr>
-        <tr><td>Primary Key</td><td>Uniquely identifies each record.</td><td>students.student_id</td></tr>
-        <tr><td>Foreign Key</td><td>Links one table to another.</td><td>students.category_id</td></tr>
-        <tr><td>Unique Key</td><td>Prevents duplicate values.</td><td>users.username</td></tr>
-      </table>
+          <div class="q" data-answer="0">
+            <p>Which table handles category-based requirements?</p>
+            <label><input type="radio" name="rel2" value="0"> category_requirements</label>
+            <label><input type="radio" name="rel2" value="1"> print_logs</label>
+            <label><input type="radio" name="rel2" value="2"> activity_log</label>
+          </div>
 
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
+          <div class="q" data-fill="many">
+            <p>A bridge table connects a many-to-______ relationship.</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
 
-        <div class="q" data-answer="0">
-          <p>Which is a primary key example?</p>
-          <label><input type="radio" name="obj1" value="0"> students.student_id</label>
-          <label><input type="radio" name="obj1" value="1"> student_name</label>
-          <label><input type="radio" name="obj1" value="2"> email only</label>
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
+        </div>
+      </section>
+
+      <section id="erd" class="page">
+        <h1>ERD, EERD, Symbols, Shapes, Cardinalities</h1>
+
+        <p><b>ERD</b> means Entity Relationship Diagram. It shows database entities/tables, attributes, keys, and relationships.</p>
+        <p><b>EERD</b> means Enhanced Entity Relationship Diagram. It extends ERD by showing enhanced concepts like specialization and generalization.</p>
+
+        <div class="defense">
+          <b>Defense line:</b> In ADAMS, USER is specialized into SUPERADMIN_USER and STAFF_USER only. Students/applicants are records, not final login users.
         </div>
 
-        <div class="q" data-answer="1">
-          <p>Which key links one table to another?</p>
-          <label><input type="radio" name="obj2" value="0"> Primary key</label>
-          <label><input type="radio" name="obj2" value="1"> Foreign key</label>
-          <label><input type="radio" name="obj2" value="2"> Password</label>
+        <h2>ERD / EERD Shapes</h2>
+        <table>
+          <thead>
+            <tr><th>Shape / Symbol</th><th>Meaning</th><th>ADAMS Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Rectangle</td><td>Entity / Table</td><td><code>students</code>, <code>users</code>, <code>documents</code></td></tr>
+            <tr><td>Oval</td><td>Attribute / Field</td><td><code>student_name</code>, <code>email</code>, <code>status</code></td></tr>
+            <tr><td>Underlined Oval</td><td>Primary Key Attribute</td><td><code>student_id</code>, <code>user_id</code></td></tr>
+            <tr><td>Diamond</td><td>Relationship</td><td>belongs to, submits, prints</td></tr>
+            <tr><td>Double Rectangle</td><td>Weak Entity</td><td>Dependent entity concept</td></tr>
+            <tr><td>Double Oval</td><td>Multivalued Attribute</td><td>Multiple phone numbers, if allowed</td></tr>
+            <tr><td>Dashed Oval</td><td>Derived Attribute</td><td>Age derived from birth date</td></tr>
+            <tr><td>ISA Triangle</td><td>Specialization / Generalization</td><td>USER → SUPERADMIN_USER and STAFF_USER</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Crow's Foot Cardinality Symbols</h2>
+        <div class="symbols">
+          <div><b>|</b><span>One</span></div>
+          <div><b>O</b><span>Zero / Optional</span></div>
+          <div><b>&lt;</b><span>Many</span></div>
+          <div><b>O|</b><span>Zero or One</span></div>
+          <div><b>||</b><span>Exactly One</span></div>
+          <div><b>|&lt;</b><span>One or Many</span></div>
+          <div><b>O&lt;</b><span>Zero or Many</span></div>
         </div>
 
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
+        <h2>ADAMS Cardinalities</h2>
+        <table>
+          <thead>
+            <tr><th>Relationship</th><th>Cardinality</th><th>Explanation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>student_categories → students</td><td>1:M</td><td>One category can classify many students.</td></tr>
+            <tr><td>student_categories ↔ requirement_types</td><td>M:N</td><td>Handled by <code>category_requirements</code>.</td></tr>
+            <tr><td>students → student_requirements</td><td>1:M</td><td>One student can have many requirement status records.</td></tr>
+            <tr><td>requirement_types → student_requirements</td><td>1:M</td><td>One requirement type can appear in many student records.</td></tr>
+            <tr><td>students → documents</td><td>1:M</td><td>One student can have multiple document records.</td></tr>
+            <tr><td>users → activity_log</td><td>1:M</td><td>One user can perform many logged actions.</td></tr>
+            <tr><td>users → print_logs</td><td>1:M</td><td>One user can print many reports.</td></tr>
+          </tbody>
+        </table>
 
-    <section id="relationships" class="page">
-      <h1>Business Rules and Relationships</h1>
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
 
-      <p>Business rules describe how records relate based on the actual process of the organization.</p>
+          <div class="q" data-answer="0">
+            <p>Rectangle in ERD means:</p>
+            <label><input type="radio" name="erd1" value="0"> Entity/Table</label>
+            <label><input type="radio" name="erd1" value="1"> Attribute</label>
+            <label><input type="radio" name="erd1" value="2"> Relationship</label>
+          </div>
 
-      <table>
-        <tr><th>ADAMS Business Rule</th><th>Relationship</th></tr>
-        <tr><td>Each student/applicant belongs to one category.</td><td>student_categories → students = 1:M</td></tr>
-        <tr><td>Different categories may require different documents.</td><td>student_categories ↔ requirement_types = M:N</td></tr>
-        <tr><td>Category requirements are handled by a bridge table.</td><td>category_requirements</td></tr>
-        <tr><td>Actual requirement status is stored per student.</td><td>student_requirements</td></tr>
-      </table>
+          <div class="q" data-answer="0">
+            <p>Crow's foot means:</p>
+            <label><input type="radio" name="erd2" value="0"> Many</label>
+            <label><input type="radio" name="erd2" value="1"> One only</label>
+            <label><input type="radio" name="erd2" value="2"> Primary key</label>
+          </div>
 
-      <div class="defense">
-        <b>Defense line:</b> The category_requirements table connects student_categories and requirement_types to handle different document checklists per category.
-      </div>
+          <div class="q" data-fill="diagram">
+            <p>ERD means Entity Relationship ______.</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
 
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
+        </div>
+      </section>
 
-        <div class="q" data-answer="0">
-          <p>student_categories to students is:</p>
-          <label><input type="radio" name="rel1" value="0"> One-to-many</label>
-          <label><input type="radio" name="rel1" value="1"> Many-to-many only</label>
-          <label><input type="radio" name="rel1" value="2"> No relationship</label>
+      <section id="normalization" class="page">
+        <h1>Normalization: UNF → 1NF → 2NF → 3NF</h1>
+
+        <div class="note">
+          <b>Main point:</b> For normalization, explain database/table transformation, not only system UI.
         </div>
 
-        <div class="q" data-answer="0">
-          <p>Which table handles category-based requirements?</p>
-          <label><input type="radio" name="rel2" value="0"> category_requirements</label>
-          <label><input type="radio" name="rel2" value="1"> print_logs</label>
-          <label><input type="radio" name="rel2" value="2"> activity_log</label>
+        <h2>Quick Visual Flow</h2>
+        <table>
+          <thead>
+            <tr><th>Stage</th><th>Database View</th><th>What Changed</th><th>Concern Fixed</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>UNF</td><td>One wide monitoring table</td><td>Student details + category + multiple Requirement/Status/File columns in one row.</td><td>Repeating groups, redundant data, difficult tracking.</td></tr>
+            <tr><td>1NF</td><td>One requirement per row</td><td>Requirement1/Requirement2 columns become multiple rows.</td><td>Atomic values; no repeating requirement columns.</td></tr>
+            <tr><td>2NF</td><td>Core tables separated</td><td><code>students</code>, <code>student_categories</code>, <code>requirement_types</code>, <code>category_requirements</code>, <code>student_requirements</code>.</td><td>Less duplication; correct checklist per category.</td></tr>
+            <tr><td>3NF</td><td>Operational/support tables separated</td><td><code>users</code>, <code>documents</code>, <code>activity_log</code>, <code>print_logs</code>, <code>password_reset_tokens</code>, <code>archived_students</code>.</td><td>Audit trail, security, reporting, archiving, maintainability.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>UNF Example</h2>
+        <table>
+          <thead>
+            <tr><th>Student</th><th>Category</th><th>Requirement 1</th><th>Status 1</th><th>File 1</th><th>Requirement 2</th><th>Status 2</th><th>File 2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Reyes, Ana</td><td>Freshman</td><td>Birth Certificate</td><td>SUBMITTED</td><td>birth.pdf</td><td>Valid ID</td><td>PENDING</td><td>N/A</td></tr>
+            <tr><td>Santos, Mark</td><td>Transferee</td><td>Transcript</td><td>PENDING</td><td>N/A</td><td>Good Moral</td><td>SUBMITTED</td><td>goodmoral.pdf</td></tr>
+          </tbody>
+        </table>
+
+        <h2>1NF Example</h2>
+        <table>
+          <thead>
+            <tr><th>Student</th><th>Category</th><th>Requirement</th><th>Status</th><th>File Name</th><th>Uploaded By</th><th>Upload Date</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Reyes, Ana</td><td>Freshman</td><td>Birth Certificate</td><td>SUBMITTED</td><td>birth.pdf</td><td>admin</td><td>2026-06-20</td></tr>
+            <tr><td>Reyes, Ana</td><td>Freshman</td><td>Valid ID</td><td>PENDING</td><td>N/A</td><td>admin</td><td></td></tr>
+            <tr><td>Santos, Mark</td><td>Transferee</td><td>Transcript</td><td>PENDING</td><td>N/A</td><td>registrar</td><td></td></tr>
+            <tr><td>Santos, Mark</td><td>Transferee</td><td>Good Moral</td><td>SUBMITTED</td><td>goodmoral.pdf</td><td>registrar</td><td>2026-06-20</td></tr>
+          </tbody>
+        </table>
+
+        <div class="defense">
+          <b>One-minute answer:</b> Our normalization started from a manual logbook-style admission record. In UNF, one row contained student details, category, and repeated requirement columns. In 1NF, each requirement became a separate row. In 2NF, we separated core data by purpose. In 3NF, we separated operational data such as users, logs, print logs, password reset tokens, documents, and archived students.
         </div>
 
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
 
-    <section id="erd" class="page">
-      <h1>ERD, EERD, Symbols, Shapes, Cardinalities</h1>
+          <div class="q" data-answer="0">
+            <p>Which stage removes repeating Requirement 1 / Requirement 2 columns?</p>
+            <label><input type="radio" name="n1" value="0"> 1NF</label>
+            <label><input type="radio" name="n1" value="1"> 2NF</label>
+            <label><input type="radio" name="n1" value="2"> 3NF</label>
+          </div>
 
-      <p><b>ERD</b> means Entity Relationship Diagram. It shows database entities/tables, attributes, keys, and relationships.</p>
-      <p><b>EERD</b> means Enhanced Entity Relationship Diagram. It extends ERD by showing enhanced concepts like specialization and generalization.</p>
+          <div class="q" data-answer="1">
+            <p>Which stage separates core tables by purpose?</p>
+            <label><input type="radio" name="n2" value="0"> 1NF</label>
+            <label><input type="radio" name="n2" value="1"> 2NF</label>
+            <label><input type="radio" name="n2" value="2"> UNF</label>
+          </div>
 
-      <div class="defense">
-        <b>Defense line:</b> In ADAMS, USER is specialized into SUPERADMIN_USER and STAFF_USER only. Students/applicants are records, not final login users.
-      </div>
+          <div class="q" data-answer="2">
+            <p>Which stage separates users, logs, reset tokens, documents, and archives?</p>
+            <label><input type="radio" name="n3" value="0"> UNF</label>
+            <label><input type="radio" name="n3" value="1"> 1NF</label>
+            <label><input type="radio" name="n3" value="2"> 3NF</label>
+          </div>
 
-      <h2>ERD / EERD Shapes</h2>
-      <table>
-        <tr><th>Shape / Symbol</th><th>Meaning</th><th>ADAMS Example</th></tr>
-        <tr><td>Rectangle</td><td>Entity / Table</td><td>students, users, documents</td></tr>
-        <tr><td>Oval</td><td>Attribute / Field</td><td>student_name, email, status</td></tr>
-        <tr><td>Underlined Oval</td><td>Primary Key Attribute</td><td>student_id, user_id</td></tr>
-        <tr><td>Diamond</td><td>Relationship</td><td>belongs to, submits, prints</td></tr>
-        <tr><td>ISA Triangle</td><td>Specialization / Generalization</td><td>USER → SUPERADMIN_USER and STAFF_USER</td></tr>
-      </table>
-
-      <h2>Crow's Foot Cardinality Symbols</h2>
-      <div class="symbols">
-        <div><b>|</b><span>One</span></div>
-        <div><b>O</b><span>Zero / Optional</span></div>
-        <div><b>&lt;</b><span>Many</span></div>
-        <div><b>O|</b><span>Zero or One</span></div>
-        <div><b>||</b><span>Exactly One</span></div>
-        <div><b>|&lt;</b><span>One or Many</span></div>
-        <div><b>O&lt;</b><span>Zero or Many</span></div>
-      </div>
-
-      <h2>ADAMS Cardinalities</h2>
-      <table>
-        <tr><th>Relationship</th><th>Cardinality</th><th>Explanation</th></tr>
-        <tr><td>student_categories → students</td><td>1:M</td><td>One category can classify many students.</td></tr>
-        <tr><td>student_categories ↔ requirement_types</td><td>M:N</td><td>Handled by category_requirements.</td></tr>
-        <tr><td>students → student_requirements</td><td>1:M</td><td>One student can have many requirement status records.</td></tr>
-        <tr><td>students → documents</td><td>1:M</td><td>One student can have multiple document records.</td></tr>
-        <tr><td>users → activity_log</td><td>1:M</td><td>One user can perform many logged actions.</td></tr>
-      </table>
-
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
-
-        <div class="q" data-answer="0">
-          <p>Rectangle in ERD means:</p>
-          <label><input type="radio" name="erd1" value="0"> Entity/Table</label>
-          <label><input type="radio" name="erd1" value="1"> Attribute</label>
-          <label><input type="radio" name="erd1" value="2"> Relationship</label>
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
         </div>
+      </section>
 
-        <div class="q" data-answer="0">
-          <p>Crow's foot means:</p>
-          <label><input type="radio" name="erd2" value="0"> Many</label>
-          <label><input type="radio" name="erd2" value="1"> One only</label>
-          <label><input type="radio" name="erd2" value="2"> Primary key</label>
+      <section id="anomalies" class="page">
+        <h1>Data Anomalies</h1>
+        <p>Normalization avoids duplicate data, repeating groups, update errors, insertion problems, and accidental data loss.</p>
+
+        <table>
+          <thead>
+            <tr><th>Anomaly</th><th>Meaning</th><th>ADAMS Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Update anomaly</td><td>Same data appears in many places and not all copies are updated.</td><td>Changing a requirement name in many repeated rows.</td></tr>
+            <tr><td>Insertion anomaly</td><td>Cannot add one type of data without unrelated data.</td><td>Cannot add a new requirement type unless a student exists.</td></tr>
+            <tr><td>Deletion anomaly</td><td>Deleting a record accidentally removes important information.</td><td>Deleting a student loses the only record of a requirement.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
+
+          <div class="q" data-answer="0">
+            <p>Changing one duplicate value but not the others is:</p>
+            <label><input type="radio" name="a1" value="0"> Update anomaly</label>
+            <label><input type="radio" name="a1" value="1"> Deletion anomaly</label>
+            <label><input type="radio" name="a1" value="2"> Insertion anomaly</label>
+          </div>
+
+          <div class="q" data-answer="2">
+            <p>Deleting a student and losing important information is:</p>
+            <label><input type="radio" name="a2" value="0"> SQL JOIN</label>
+            <label><input type="radio" name="a2" value="1"> Primary key</label>
+            <label><input type="radio" name="a2" value="2"> Deletion anomaly</label>
+          </div>
+
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
         </div>
+      </section>
 
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
+      <section id="schema" class="page">
+        <h1>ADAMS Tables and System Info</h1>
 
-    <section id="normalization" class="page">
-      <h1>Normalization: UNF → 1NF → 2NF → 3NF</h1>
+        <h2>Working Local Setup</h2>
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>System URL</td><td><code>http://localhost:8090/doc_ad_sys</code></td></tr>
+            <tr><td>MySQL Workbench Host</td><td><code>127.0.0.1</code></td></tr>
+            <tr><td>MySQL Workbench Port</td><td><code>3307</code></td></tr>
+            <tr><td>Database</td><td><code>doc_admission_db</code></td></tr>
+            <tr><td>Common local username/password</td><td><code>root / Root12345!</code></td></tr>
+            <tr><td>Final user roles</td><td>Superadmin and Staff only</td></tr>
+          </tbody>
+        </table>
 
-      <div class="note">
-        <b>Main point:</b> For normalization, explain database/table transformation, not only system UI.
-      </div>
+        <h2>Locked ADAMS Tables and Key Attributes</h2>
+        <table>
+          <thead>
+            <tr><th>Table</th><th>Correct attributes to remember</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>users</td><td>user_id, username, password, email, full_name, phone, is_active, created_at, last_login, role</td></tr>
+            <tr><td>students</td><td>student_id, user_id, student_name, last_name, first_name, middle_name, birth_date, email, category_id, remarks, phone</td></tr>
+            <tr><td>student_categories</td><td>category_id, category_name, sort_order</td></tr>
+            <tr><td>requirement_types</td><td>requirement_id, requirement_name, description</td></tr>
+            <tr><td>category_requirements</td><td>category_id, requirement_id</td></tr>
+            <tr><td>student_requirements</td><td>student_requirement_id, student_id, requirement_id, file_name, file_path, uploaded_by, status, upload_date, uploaded_at</td></tr>
+            <tr><td>documents</td><td>document_id, student_id, document_type, file_path, tracking_number, status, date_submitted, remarks, student_pk</td></tr>
+            <tr><td>activity_log</td><td>log_id, user_id, username, action, module, description, log_time</td></tr>
+            <tr><td>print_logs</td><td>log_id, ref_no, student_id, document_type, printed_by, printed_by_name, printed_at, campus_code</td></tr>
+            <tr><td>password_reset_tokens</td><td>id, user_id, token, expires_at, used, created_at</td></tr>
+            <tr><td>archived_students</td><td>archive_id, student_id, student_name, email, phone, birth_date, category_id, remarks, archived_at, archived_by</td></tr>
+          </tbody>
+        </table>
+      </section>
 
-      <table>
-        <tr><th>Stage</th><th>Database View</th><th>What Changed</th><th>Concern Fixed</th></tr>
-        <tr><td>UNF</td><td>One wide monitoring table</td><td>Student details + category + multiple requirement/status/file columns in one row.</td><td>Repeating groups and redundancy.</td></tr>
-        <tr><td>1NF</td><td>One requirement per row</td><td>Requirement1/Requirement2 columns become multiple rows.</td><td>Atomic values.</td></tr>
-        <tr><td>2NF</td><td>Core tables separated</td><td>students, student_categories, requirement_types, category_requirements, student_requirements.</td><td>Less duplication.</td></tr>
-        <tr><td>3NF</td><td>Support tables separated</td><td>users, documents, activity_log, print_logs, password_reset_tokens, archived_students.</td><td>Security, audit trail, reporting.</td></tr>
-      </table>
+      <section id="sql-lessons" class="page">
+        <h1>SQL Lessons</h1>
 
-      <div class="defense">
-        <b>One-minute answer:</b> Our normalization started from a manual logbook-style admission record. In UNF, one row contained student details, category, and repeated requirement columns. In 1NF, each requirement became a separate row. In 2NF, we separated core data by purpose. In 3NF, we separated operational data such as users, logs, print logs, password reset tokens, documents, and archived students.
-      </div>
-
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
-
-        <div class="q" data-answer="0">
-          <p>Which stage removes repeating Requirement 1 / Requirement 2 columns?</p>
-          <label><input type="radio" name="n1" value="0"> 1NF</label>
-          <label><input type="radio" name="n1" value="1"> 2NF</label>
-          <label><input type="radio" name="n1" value="2"> 3NF</label>
-        </div>
-
-        <div class="q" data-answer="2">
-          <p>Which stage separates users, logs, reset tokens, documents, and archives?</p>
-          <label><input type="radio" name="n2" value="0"> UNF</label>
-          <label><input type="radio" name="n2" value="1"> 1NF</label>
-          <label><input type="radio" name="n2" value="2"> 3NF</label>
-        </div>
-
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
-
-    <section id="schema" class="page">
-      <h1>ADAMS Tables and System Info</h1>
-
-      <h2>Working Local Setup</h2>
-      <table>
-        <tr><th>Item</th><th>Value</th></tr>
-        <tr><td>System URL</td><td>http://localhost:8090/doc_ad_sys</td></tr>
-        <tr><td>MySQL Workbench Host</td><td>127.0.0.1</td></tr>
-        <tr><td>MySQL Workbench Port</td><td>3307</td></tr>
-        <tr><td>Database</td><td>doc_admission_db</td></tr>
-        <tr><td>Common local username/password</td><td>root / Root12345!</td></tr>
-        <tr><td>Final user roles for defense</td><td>Superadmin and Staff only</td></tr>
-      </table>
-
-      <h2>Locked ADAMS Tables and Key Attributes</h2>
-      <table>
-        <tr><th>Table</th><th>Correct attributes to remember</th></tr>
-        <tr><td>users</td><td>user_id, username, password, email, full_name, phone, is_active, created_at, last_login, role</td></tr>
-        <tr><td>students</td><td>student_id, user_id, student_name, last_name, first_name, middle_name, birth_date, email, category_id, remarks, phone</td></tr>
-        <tr><td>student_categories</td><td>category_id, category_name, sort_order</td></tr>
-        <tr><td>requirement_types</td><td>requirement_id, requirement_name, description</td></tr>
-        <tr><td>category_requirements</td><td>category_id, requirement_id</td></tr>
-        <tr><td>student_requirements</td><td>student_requirement_id, student_id, requirement_id, file_name, file_path, uploaded_by, status, upload_date, uploaded_at</td></tr>
-        <tr><td>documents</td><td>document_id, student_id, document_type, file_path, tracking_number, status, date_submitted, remarks, student_pk</td></tr>
-        <tr><td>activity_log</td><td>log_id, user_id, username, action, module, description, log_time</td></tr>
-        <tr><td>print_logs</td><td>log_id, ref_no, student_id, document_type, printed_by, printed_by_name, printed_at, campus_code</td></tr>
-        <tr><td>password_reset_tokens</td><td>id, user_id, token, expires_at, used, created_at</td></tr>
-        <tr><td>archived_students</td><td>archive_id, student_id, student_name, email, phone, birth_date, category_id, remarks, archived_at, archived_by</td></tr>
-      </table>
-    </section>
-
-    <section id="sql" class="page">
-      <h1>SQL Lessons</h1>
-
-      <h2>Quick Start</h2>
-      <pre><code>USE doc_admission_db;
+        <h2>Quick Start</h2>
+        <pre><code>USE doc_admission_db;
 SHOW TABLES;
 
 DESCRIBE students;
 DESCRIBE student_requirements;
 DESCRIBE documents;</code></pre>
 
-      <h2>Basic SELECT</h2>
-      <pre><code>SELECT *
+        <h2>Basic SELECT</h2>
+        <pre><code>SELECT *
 FROM students;
 
 SELECT user_id, username, full_name, role, is_active
@@ -380,8 +524,8 @@ SELECT student_id, last_name, first_name, email
 FROM students
 ORDER BY last_name ASC, first_name ASC;</code></pre>
 
-      <h2>COUNT and GROUP BY</h2>
-      <pre><code>SELECT COUNT(*) AS total_students
+        <h2>COUNT and GROUP BY</h2>
+        <pre><code>SELECT COUNT(*) AS total_students
 FROM students;
 
 SELECT role, COUNT(*) AS total_users
@@ -389,8 +533,8 @@ FROM users
 WHERE role IN ('superadmin','staff')
 GROUP BY role;</code></pre>
 
-      <h2>JOIN</h2>
-      <pre><code>SELECT s.student_id, s.student_name, s.email, c.category_name
+        <h2>JOIN</h2>
+        <pre><code>SELECT s.student_id, s.student_name, s.email, c.category_name
 FROM students s
 LEFT JOIN student_categories c
  ON c.category_id = s.category_id
@@ -404,99 +548,126 @@ JOIN requirement_types r
  ON r.requirement_id = cr.requirement_id
 ORDER BY c.category_name, r.requirement_name;</code></pre>
 
-      <div class="activity" data-activity>
-        <h2>Activities</h2>
+        <h2>Safety Before UPDATE / DELETE</h2>
+        <pre><code>SELECT *
+FROM users
+WHERE username = 'staff1';
 
-        <div class="q" data-fill="show tables">
-          <p>What SQL command lists all tables?</p>
-          <input type="text" placeholder="Type answer" />
+UPDATE users
+SET email = 'newemail@example.com'
+WHERE username = 'staff1';
+
+DELETE FROM users
+WHERE username = 'staff1';</code></pre>
+
+        <div class="activity" data-activity>
+          <h2>Activities</h2>
+
+          <div class="q" data-fill="show tables">
+            <p>What SQL command lists all tables?</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
+
+          <div class="q" data-fill="describe students">
+            <p>What SQL command checks the students table structure?</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
+
+          <div class="q" data-fill="where">
+            <p>UPDATE and DELETE should always have ______.</p>
+            <input type="text" placeholder="Type answer" />
+          </div>
+
+          <button class="check-btn" type="button">Check Answers</button>
+          <button class="reset-btn" type="button">Reset</button>
+          <div class="score"></div>
         </div>
+      </section>
 
-        <div class="q" data-fill="describe students">
-          <p>What SQL command checks the students table structure?</p>
-          <input type="text" placeholder="Type answer" />
-        </div>
+      <section id="sql-tryit" class="page">
+        <h1>SQL TryIt Editor</h1>
+        <p>This is a safe offline SQL simulator using ADAMS sample tables. It does not connect to your real MySQL database.</p>
 
-        <button onclick="checkActivity(this)">Check Answers</button>
-        <div class="score"></div>
-      </div>
-    </section>
+        <div class="tryit">
+          <div>
+            <h2>SQL Editor</h2>
+            <textarea id="sqlEditor">SELECT * FROM students;</textarea>
+            <div class="button-row">
+              <button id="runSqlBtn" type="button">Run SQL</button>
+              <button id="copySqlBtn" type="button">Copy</button>
+              <button id="clearSqlBtn" type="button">Clear</button>
+            </div>
 
-    <section id="tryit" class="page">
-      <h1>SQL TryIt Editor</h1>
-      <p>This is a safe offline SQL simulator using ADAMS sample tables. It does not connect to your real MySQL database.</p>
-
-      <div class="tryit">
-        <div>
-          <h2>SQL Editor</h2>
-          <textarea id="sqlEditor">SELECT * FROM students;</textarea>
-          <button onclick="runSQL()">Run SQL</button>
-          <button onclick="copySQL()">Copy</button>
-          <button onclick="clearSQL()">Clear</button>
-
-          <h3>Examples</h3>
-          <button onclick="loadSQL('SHOW TABLES;')">SHOW TABLES</button>
-          <button onclick="loadSQL('DESCRIBE students;')">DESCRIBE students</button>
-          <button onclick="loadSQL('SELECT * FROM students;')">SELECT students</button>
-          <button onclick="loadSQL('SELECT COUNT(*) AS total_students FROM students;')">COUNT students</button>
-          <button onclick="loadSQL(`SELECT s.student_id, s.student_name, c.category_name
+            <h3>Examples</h3>
+            <button class="example-sql" data-sql="SHOW TABLES;">SHOW TABLES</button>
+            <button class="example-sql" data-sql="DESCRIBE students;">DESCRIBE students</button>
+            <button class="example-sql" data-sql="SELECT * FROM students;">SELECT students</button>
+            <button class="example-sql" data-sql="SELECT COUNT(*) AS total_students FROM students;">COUNT students</button>
+            <button class="example-sql" data-sql="SELECT s.student_id, s.student_name, c.category_name
 FROM students s
 LEFT JOIN student_categories c
- ON c.category_id = s.category_id;`)">JOIN category</button>
+ ON c.category_id = s.category_id;">JOIN category</button>
+            <button class="example-sql" data-sql="SELECT c.category_name, r.requirement_name
+FROM category_requirements cr
+JOIN student_categories c ON c.category_id = cr.category_id
+JOIN requirement_types r ON r.requirement_id = cr.requirement_id;">Requirements per category</button>
+            <button class="example-sql" data-sql="SELECT s.student_name, r.requirement_name, sr.status
+FROM students s
+JOIN student_requirements sr ON sr.student_id = s.student_id
+JOIN requirement_types r ON r.requirement_id = sr.requirement_id;">Student requirements</button>
+          </div>
+
+          <div>
+            <h2>Result</h2>
+            <div id="sqlResult" class="result">Click Run SQL.</div>
+          </div>
         </div>
+      </section>
 
-        <div>
-          <h2>Result</h2>
-          <div id="sqlResult" class="result">Click Run SQL.</div>
+      <section id="defense" class="page">
+        <h1>Defense Q&A</h1>
+
+        <details><summary>What is the main focus of your project?</summary><p>ADAMS manages admission documents and applicant/student records using a relational database.</p></details>
+        <details><summary>Why is ADAMS considered a database project?</summary><p>Its features depend on tables, keys, relationships, and SQL queries.</p></details>
+        <details><summary>What is a database?</summary><p>A database is an organized collection of related data that can be stored, searched, updated, and managed.</p></details>
+        <details><summary>What is a DBMS?</summary><p>A DBMS is software used to create, manage, secure, and retrieve records from a database.</p></details>
+        <details><summary>What is a primary key?</summary><p>A primary key uniquely identifies each record. In ADAMS, students.student_id identifies each student.</p></details>
+        <details><summary>What is a foreign key?</summary><p>A foreign key links one table to another. In ADAMS, students.category_id links to student_categories.category_id.</p></details>
+        <details><summary>How did ADAMS apply 1NF?</summary><p>By removing repeating groups and making each requirement a separate record.</p></details>
+        <details><summary>How did ADAMS apply 2NF?</summary><p>By separating student data, category data, requirement type data, category requirements, and student requirements.</p></details>
+        <details><summary>How did ADAMS apply 3NF?</summary><p>By separating users, activity logs, print logs, password reset tokens, documents, and archived records.</p></details>
+        <details><summary>What is ERD?</summary><p>An ERD shows tables, attributes, keys, and relationships.</p></details>
+        <details><summary>What is EERD?</summary><p>An EERD extends ERD with enhanced concepts like specialization and generalization.</p></details>
+
+        <div class="defense">
+          <b>Emergency answer:</b> Since our subject is Information Management / DBMS, our focus is database design: entities, attributes, keys, relationships, normalization, SQL queries, and data integrity in ADAMS.
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="defense" class="page">
-      <h1>Defense Q&A</h1>
+      <section id="quiz" class="page">
+        <h1>Quiz</h1>
+        <div id="quizBox"></div>
+        <button id="checkQuizBtn" type="button">Check Quiz</button>
+        <button id="resetQuizBtn" type="button">Reset</button>
+        <div id="quizScore" class="score"></div>
+      </section>
 
-      <details><summary>What is the main focus of your project?</summary><p>ADAMS manages admission documents and applicant/student records using a relational database.</p></details>
-      <details><summary>Why is ADAMS considered a database project?</summary><p>Its features depend on tables, keys, relationships, and SQL queries.</p></details>
-      <details><summary>What is a database?</summary><p>A database is an organized collection of related data that can be stored, searched, updated, and managed.</p></details>
-      <details><summary>What is a DBMS?</summary><p>A DBMS is software used to create, manage, secure, and retrieve records from a database.</p></details>
-      <details><summary>What is a primary key?</summary><p>A primary key uniquely identifies each record. In ADAMS, students.student_id identifies each student.</p></details>
-      <details><summary>What is a foreign key?</summary><p>A foreign key links one table to another. In ADAMS, students.category_id links to student_categories.category_id.</p></details>
-      <details><summary>How did ADAMS apply 1NF?</summary><p>By removing repeating groups and making each requirement a separate record.</p></details>
-      <details><summary>How did ADAMS apply 2NF?</summary><p>By separating student data, category data, requirement type data, category requirements, and student requirements.</p></details>
-      <details><summary>How did ADAMS apply 3NF?</summary><p>By separating users, activity logs, print logs, password reset tokens, documents, and archived records.</p></details>
-      <details><summary>What is ERD?</summary><p>An ERD shows tables, attributes, keys, and relationships.</p></details>
-      <details><summary>What is EERD?</summary><p>An EERD extends ERD with enhanced concepts like specialization and generalization.</p></details>
+      <section id="github" class="page">
+        <h1>GitHub Upload Guide</h1>
+        <ol>
+          <li>Open your GitHub repository.</li>
+          <li>Make sure files are named exactly: <code>index.html</code>, <code>style.css</code>, and <code>script.js</code>.</li>
+          <li>Make sure all three files are in the root folder.</li>
+          <li>Go to <b>Settings → Pages</b>.</li>
+          <li>Choose <b>Deploy from branch</b>.</li>
+          <li>Branch: <b>main</b>. Folder: <b>/root</b>.</li>
+          <li>Click Save and wait 1–3 minutes.</li>
+        </ol>
+        <div class="note"><b>Important:</b> Do not paste JavaScript in <code>style.css</code>. Do not paste CSS in <code>script.js</code>.</div>
+      </section>
+    </main>
+  </div>
 
-      <div class="defense">
-        <b>Emergency answer:</b> Since our subject is Information Management / DBMS, our focus is database design: entities, attributes, keys, relationships, normalization, SQL queries, and data integrity in ADAMS.
-      </div>
-    </section>
-
-    <section id="quiz" class="page">
-      <h1>Quiz</h1>
-      <div id="quizBox"></div>
-      <button onclick="checkQuiz()">Check Quiz</button>
-      <button onclick="resetQuiz()">Reset</button>
-      <div id="quizScore" class="score"></div>
-    </section>
-
-    <section id="github" class="page">
-      <h1>GitHub Upload Guide</h1>
-      <ol>
-        <li>Create or open your GitHub repository.</li>
-        <li>Upload these files: <b>index.html</b>, <b>style.css</b>, and <b>script.js</b>.</li>
-        <li>Make sure all three files are in the root folder.</li>
-        <li>Go to <b>Settings → Pages</b>.</li>
-        <li>Choose <b>Deploy from branch</b>.</li>
-        <li>Branch: <b>main</b>. Folder: <b>/root</b>.</li>
-        <li>Click Save and wait 1–3 minutes.</li>
-      </ol>
-      <div class="note"><b>Important:</b> The homepage file must be named exactly <code>index.html</code>.</div>
-    </section>
-
-  </main>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
