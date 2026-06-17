@@ -1,0 +1,1 @@
+Original PDFs are preserved in /pdf. Real SQL rows are embedded in assets/js/data.js from the uploaded ADAMS System n DB SQL dumps.
