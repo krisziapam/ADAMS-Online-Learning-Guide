@@ -1,6 +1,6 @@
 # ADAMS Online Learning Guide - Complete GitHub Pages Version
 
-This is a complete static learning portal for the ADAMS database project. It is designed like a W3Schools-style reviewer site and can be deployed directly on GitHub Pages.
+This is a final complete static learning portal for the ADAMS database project. It is designed like a W3Schools-style reviewer site and can be deployed directly on GitHub Pages.
 
 ## Included Features
 
@@ -27,7 +27,7 @@ This is a complete static learning portal for the ADAMS database project. It is 
 ## Folder Structure
 
 ```text
-adams-learning-guide-complete/
+adams-learning-guide-final complete/
 ├── index.html
 ├── README.md
 └── assets/
