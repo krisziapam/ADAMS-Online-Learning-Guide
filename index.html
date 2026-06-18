@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADAMS Course | Online Learning Guide</title>
+  <meta name="description" content="GitHub-ready ADAMS online learning guide with SQL TryIt, search, ERD/EERD, reviewer activities, flashcards, and defense practice." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button id="menuBtn" class="icon-btn" aria-label="Open lesson menu">☰</button>
+    <a class="brand" href="#home"><span>ADAMS</span> Course</a>
+    <div class="top-search-wrap">
+      <input id="topSearch" type="search" placeholder="Search lessons, SQL, ERD, normalization, Q&A..." aria-label="Search reviewer" />
+      <div id="topSearchResults" class="top-results"></div>
+    </div>
+    <button id="themeBtn" class="icon-btn" title="Toggle dark mode">◐</button>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <h2>LESSONS</h2>
+      <nav id="lessonNav"></nav>
+    </aside>
+
+    <main class="main" id="main">
+      <section id="page" class="page"></section>
+      <div class="pager">
+        <button id="prevBtn">❮ Previous</button>
+        <button id="nextBtn">Next ❯</button>
+      </div>
+    </main>
+  </div>
+
+  <button id="quickBtn" class="quick-btn">⚡ Defense</button>
+  <aside id="quickPanel" class="quick-panel" aria-label="Defense quick reference">
+    <button id="closeQuick" class="close">×</button>
+    <h2>Defense Quick Reference</h2>
+    <input id="quickSearch" placeholder="Try: foreign key, 3NF, DESCRIBE..." />
+    <div id="quickResults"></div>
+  </aside>
+
+  <button id="toTop" class="to-top">↑</button>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/views.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
