@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADAMS DBMS Reviewer App</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --accent: #f59e0b;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #d1d5db;
+      --good: #16a34a;
+      --bad: #dc2626;
+      --soft: #ecfeff;
+      --shadow: 0 10px 25px rgba(15, 23, 42, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 42%, #ecfdf5 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), #0f172a);
+      color: white;
+      padding: 28px 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      letter-spacing: -0.03em;
+    }
+
+    header p {
+      margin: 0 auto;
+      max-width: 780px;
+      color: #d1fae5;
+      line-height: 1.5;
+      font-size: 0.98rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: -18px auto 40px;
+      padding: 0 16px 40px;
+    }
+
+    .toolbar, .card, .study-card {
+      background: var(--card);
+      border: 1px solid rgba(209, 213, 219, 0.7);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .toolbar {
+      padding: 16px;
+      margin-bottom: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    button, .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      background: #e5e7eb;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.15s ease;
+      font-size: 0.92rem;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button.active, button.primary { background: var(--primary); color: white; }
+    button.secondary { background: #cffafe; color: #155e75; }
+    button.warning { background: #fef3c7; color: #92400e; }
+    button.danger { background: #fee2e2; color: #991b1b; }
+    button.good { background: #dcfce7; color: #166534; }
+    button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, auto);
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="search"], input[type="text"], textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 1rem;
+      outline: none;
+      background: white;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.25s ease;
+    }
+
+    .card {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .q-number {
+      display: inline-block;
+      color: white;
+      background: var(--primary);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      line-height: 1.45;
+      font-weight: 800;
+      margin: 0 0 14px;
+      color: #111827;
+    }
+
+    .answer {
+      background: var(--soft);
+      border-left: 5px solid var(--primary);
+      padding: 14px;
+      border-radius: 12px;
+      line-height: 1.55;
+      margin-top: 12px;
+    }
+
+    .hidden { display: none !important; }
+
+    .list-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: white;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .list-question {
+      padding: 14px;
+      cursor: pointer;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .list-answer {
+      padding: 0 14px 14px;
+      color: #374151;
+      line-height: 1.55;
+    }
+
+    .study-card {
+      min-height: 390px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .flashcard-box {
+      min-height: 260px;
+      border: 2px dashed #99f6e4;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      background: #f0fdfa;
+      cursor: pointer;
+    }
+
+    .flashcard-box .big {
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      line-height: 1.4;
+      font-weight: 800;
+    }
+
+    .flashcard-box .small {
+      font-size: 1.04rem;
+      line-height: 1.65;
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin: 9px 0;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 13px;
+      padding: 13px;
+      font-weight: 600;
+    }
+
+    .option.correct {
+      border-color: var(--good);
+      background: #dcfce7;
+      color: #14532d;
+    }
+
+    .option.wrong {
+      border-color: var(--bad);
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 13px;
+      border-radius: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .feedback.good { background: #dcfce7; color: #166534; }
+    .feedback.bad { background: #fee2e2; color: #991b1b; }
+    .feedback.neutral { background: #fef3c7; color: #92400e; }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .pill {
+      border: 1px solid #bae6fd;
+      background: #f0f9ff;
+      color: #075985;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .blank-text {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      padding: 14px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      margin-bottom: 12px;
+    }
+
+    .blank-line {
+      display: inline-block;
+      min-width: 110px;
+      border-bottom: 2px solid var(--primary);
+      color: transparent;
+      margin: 0 4px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 850px) {
+      .mode-buttons { grid-template-columns: repeat(2, 1fr); }
+      .controls { grid-template-columns: 1fr; }
+      main { margin-top: -10px; }
+    }
+
+    @media (max-width: 520px) {
+      header { padding: 22px 14px; }
+      .mode-buttons { grid-template-columns: 1fr; }
+      .card, .toolbar, .study-card { border-radius: 16px; }
+      .actions button { flex: 1 1 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ADAMS DBMS Reviewer App</h1>
+    <p>Practice all 50 panel questions using Question List, Fill in the Blanks, Written Answer, Multiple Choice, and Flashcards.</p>
+  </header>
+
+  <main>
+    <section class="toolbar">
+      <div class="mode-buttons" id="modeButtons">
+        <button class="active" data-mode="list">Question List</button>
+        <button data-mode="blank">Fill in the Blanks</button>
+        <button data-mode="written">Written Answer</button>
+        <button data-mode="mcq">Multiple Choice</button>
+        <button data-mode="flashcard">Flashcards</button>
+      </div>
+
+      <div class="controls">
+        <input type="search" id="searchBox" placeholder="Search questions or answers..." />
+        <select id="topicFilter" title="Filter by topic">
+          <option value="all">All topics</option>
+          <option value="DBMS and MySQL Foundations">DBMS and MySQL Foundations</option>
+          <option value="SQL Commands and Database Objects">SQL Commands and Database Objects</option>
+          <option value="Business Rules, Relationships, and Cardinality">Business Rules, Relationships, and Cardinality</option>
+          <option value="Normalization and Data Anomalies">Normalization and Data Anomalies</option>
+          <option value="ERD, EERD, SQL Checking, and NoSQL">ERD, EERD, SQL Checking, and NoSQL</option>
+        </select>
+        <button class="secondary" id="shuffleBtn">Shuffle</button>
+        <button class="warning" id="resetBtn">Reset Progress</button>
+      </div>
+
+      <div class="stats">
+        <span id="modeLabel">Mode: Question List</span>
+        <span id="countLabel">50 questions loaded</span>
+        <span id="scoreLabel">Score: 0 / 0</span>
+      </div>
+      <div class="progress-bar" aria-label="progress"><div class="progress-fill" id="progressFill"></div></div>
+    </section>
+
+    <section id="app"></section>
+  </main>
+
+  <footer>
+    Tip: In defense, answer the DBMS concept first, then connect it to ADAMS.
+  </footer>
+
+  <script>
+    const questions = [
+      { n: 1, topic: "DBMS and MySQL Foundations", q: "What is the main focus of your project?", a: "The main focus is database design. ADAMS is a database-driven system for organizing and tracking student admission records, categories, requirements, uploads, users, logs, printed reports, password reset records, and archived records." },
+      { n: 2, topic: "DBMS and MySQL Foundations", q: "Why is ADAMS considered a database project?", a: "Because the core output is the database structure: tables, keys, relationships, normalization, ERD/EERD, data dictionary, SQL schema, and SQL queries. The interface supports the database, but the database is the main requirement." },
+      { n: 3, topic: "DBMS and MySQL Foundations", q: "What is a database?", a: "A database is an organized collection of related data that can be stored, managed, searched, updated, and retrieved efficiently." },
+      { n: 4, topic: "DBMS and MySQL Foundations", q: "What is a DBMS?", a: "DBMS means Database Management System. It is software used to create, manage, control, secure, and retrieve data from a database. In ADAMS, the DBMS used is MySQL." },
+      { n: 5, topic: "DBMS and MySQL Foundations", q: "Why did you use MySQL?", a: "We used MySQL because ADAMS uses structured and related data. MySQL supports relational tables, primary keys, foreign keys, constraints, joins, and SQL queries." },
+      { n: 6, topic: "DBMS and MySQL Foundations", q: "What type of database management system is MySQL?", a: "MySQL is an RDBMS, or Relational Database Management System. It stores data in tables that can be related through keys." },
+      { n: 7, topic: "DBMS and MySQL Foundations", q: "What is a relational database?", a: "A relational database stores data in tables made of rows and columns. The tables are connected through relationships using primary keys and foreign keys." },
+      { n: 8, topic: "DBMS and MySQL Foundations", q: "Why is a relational database suitable for ADAMS?", a: "ADAMS has structured data with clear relationships: students belong to categories, categories require documents, students submit requirements, and users perform actions. This fits a relational database model." },
+      { n: 9, topic: "DBMS and MySQL Foundations", q: "What is SQL?", a: "SQL means Structured Query Language. It is used to create database objects, insert data, update data, delete data, and retrieve records from a relational database." },
+      { n: 10, topic: "DBMS and MySQL Foundations", q: "What are the main categories of SQL commands?", a: "The main categories are DDL, DML, DQL, DCL, and TCL. In ADAMS, we mostly used DDL for creating tables and DQL for SELECT queries." },
+      { n: 11, topic: "SQL Commands and Database Objects", q: "What is DDL?", a: "DDL means Data Definition Language. It defines or changes the database structure. Examples are CREATE, ALTER, and DROP." },
+      { n: 12, topic: "SQL Commands and Database Objects", q: "What is DML?", a: "DML means Data Manipulation Language. It is used to modify the data inside tables. Examples are INSERT, UPDATE, and DELETE." },
+      { n: 13, topic: "SQL Commands and Database Objects", q: "What is DQL?", a: "DQL means Data Query Language. It retrieves data from the database. The main DQL command is SELECT." },
+      { n: 14, topic: "SQL Commands and Database Objects", q: "What is a table?", a: "A table is a database object that stores data in rows and columns. In ADAMS, examples are students, users, requirement_types, and student_requirements." },
+      { n: 15, topic: "SQL Commands and Database Objects", q: "What is a field or column?", a: "A field or column is one specific data attribute in a table, such as student_id, student_name, email, or status." },
+      { n: 16, topic: "SQL Commands and Database Objects", q: "What is a record or row?", a: "A record or row is one complete entry in a table. For example, one row in the students table represents one student or applicant." },
+      { n: 17, topic: "SQL Commands and Database Objects", q: "What is a primary key?", a: "A primary key is a field that uniquely identifies each record in a table. In ADAMS, students.student_id uniquely identifies each student." },
+      { n: 18, topic: "SQL Commands and Database Objects", q: "What is a foreign key?", a: "A foreign key is a field that links one table to another. In ADAMS, students.category_id links the students table to the student_categories table." },
+      { n: 19, topic: "SQL Commands and Database Objects", q: "What is a unique key?", a: "A unique key prevents duplicate values in a column or combination of columns. For example, users.username should be unique because two users should not have the same login username." },
+      { n: 20, topic: "SQL Commands and Database Objects", q: "What is referential integrity?", a: "Referential integrity means that relationships between tables remain valid. For example, a student category used in the students table should exist in the student_categories table." },
+      { n: 21, topic: "Business Rules, Relationships, and Cardinality", q: "What are business rules in database design?", a: "Business rules are conditions or policies that define how data should behave. They help determine entities, relationships, cardinality, constraints, and database structure." },
+      { n: 22, topic: "Business Rules, Relationships, and Cardinality", q: "Give one business rule in ADAMS.", a: "One business rule is that each student belongs to one student category. This is implemented through students.category_id referencing student_categories.category_id." },
+      { n: 23, topic: "Business Rules, Relationships, and Cardinality", q: "Why do different student categories need different requirements?", a: "Different applicant types may require different documents. For example, a transferee may need a transcript, while a freshman may need a different set of admission documents." },
+      { n: 24, topic: "Business Rules, Relationships, and Cardinality", q: "What table handles category-based requirements?", a: "The category_requirements table handles category-based requirements by connecting student_categories and requirement_types." },
+      { n: 25, topic: "Business Rules, Relationships, and Cardinality", q: "Why do you need the category_requirements table?", a: "We need it because one category can have many requirements, and one requirement can apply to many categories. This is a many-to-many relationship, so a bridge table is necessary." },
+      { n: 26, topic: "Business Rules, Relationships, and Cardinality", q: "What is a bridge table?", a: "A bridge table resolves a many-to-many relationship between two tables. In ADAMS, category_requirements is the bridge table between student_categories and requirement_types." },
+      { n: 27, topic: "Business Rules, Relationships, and Cardinality", q: "What is cardinality?", a: "Cardinality describes how records in one table relate to records in another table, such as one-to-one, one-to-many, or many-to-many." },
+      { n: 28, topic: "Business Rules, Relationships, and Cardinality", q: "Give one example of a one-to-many relationship in ADAMS.", a: "One student category can have many students. This means student_categories to students is a one-to-many relationship." },
+      { n: 29, topic: "Business Rules, Relationships, and Cardinality", q: "Give one example of a many-to-many relationship in ADAMS.", a: "Student categories and requirement types have a many-to-many relationship because one category can require many documents and one document can apply to many categories." },
+      { n: 30, topic: "Business Rules, Relationships, and Cardinality", q: "What table stores the actual student requirement status?", a: "The student_requirements table stores each student's requirement status, uploaded file details, upload date, and uploading user." },
+      { n: 31, topic: "Normalization and Data Anomalies", q: "What is normalization?", a: "Normalization is the process of organizing data into related tables to reduce redundancy, avoid inconsistencies, and improve data integrity." },
+      { n: 32, topic: "Normalization and Data Anomalies", q: "Why did you normalize your database?", a: "We normalized the database to avoid one large repeated logbook table. Normalization reduces duplicate data, prevents update errors, and makes searching and reporting easier." },
+      { n: 33, topic: "Normalization and Data Anomalies", q: "What is UNF?", a: "UNF means Unnormalized Form. It is a table that still contains repeating groups or multiple values in one row, such as Requirement1, Status1, Requirement2, and Status2." },
+      { n: 34, topic: "Normalization and Data Anomalies", q: "How did ADAMS apply 1NF?", a: "ADAMS applied 1NF by removing repeating groups. Each requirement is represented as a separate row instead of multiple requirement columns in the same student row." },
+      { n: 35, topic: "Normalization and Data Anomalies", q: "How did ADAMS apply 2NF?", a: "ADAMS applied 2NF by separating data based on purpose. Student details go to students, categories go to student_categories, requirement names go to requirement_types, and submission details go to student_requirements." },
+      { n: 36, topic: "Normalization and Data Anomalies", q: "How did ADAMS apply 3NF?", a: "ADAMS applied 3NF by separating supporting data into their own tables, such as users, activity_log, print_logs, password_reset_tokens, documents, and archived_students." },
+      { n: 37, topic: "Normalization and Data Anomalies", q: "What problem happens if you use only one big table?", a: "One big table causes repeated data, inconsistent values, difficulty updating records, and poor reporting. It can also create update, insertion, and deletion anomalies." },
+      { n: 38, topic: "Normalization and Data Anomalies", q: "What is an update anomaly?", a: "An update anomaly happens when the same information is repeated in many rows and only some copies are updated, causing inconsistent data." },
+      { n: 39, topic: "Normalization and Data Anomalies", q: "What is an insertion anomaly?", a: "An insertion anomaly happens when data cannot be added unless unrelated data is also available. For example, a requirement type should be added even if no student has submitted it yet." },
+      { n: 40, topic: "Normalization and Data Anomalies", q: "What is a deletion anomaly?", a: "A deletion anomaly happens when deleting one record unintentionally removes important information that should still be kept." },
+      { n: 41, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What is an ERD?", a: "An ERD, or Entity Relationship Diagram, visually shows the database entities, attributes, keys, relationships, and cardinality." },
+      { n: 42, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What is an EERD?", a: "An EERD, or Enhanced Entity Relationship Diagram, extends the ERD by showing advanced concepts such as specialization and generalization." },
+      { n: 43, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What is the difference between ERD and EERD?", a: "The ERD shows the actual database implementation, while the EERD shows the enhanced conceptual design, such as user roles and student classification." },
+      { n: 44, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What is specialization in EERD?", a: "Specialization means dividing a general entity into subtypes. In ADAMS, USER can be specialized into superadmin, admin, staff, and student user roles." },
+      { n: 45, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What is the purpose of the data dictionary?", a: "The data dictionary defines the tables, fields, data types, keys, constraints, and descriptions of each database element." },
+      { n: 46, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What SQL command will you use to view all tables?", a: "Use SHOW TABLES; after selecting the database with USE doc_admission_db; This displays the tables inside the selected database." },
+      { n: 47, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What SQL command will you use to check the structure of a table?", a: "Use DESCRIBE table_name; For example, DESCRIBE students; shows the fields, data types, keys, and null settings of the students table." },
+      { n: 48, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What SQL command will you use to retrieve student records?", a: "Use SELECT * FROM students; This retrieves all records and columns from the students table." },
+      { n: 49, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "What is the difference between SQL and NoSQL?", a: "SQL databases are relational, table-based, and structured using schemas. NoSQL databases are non-relational and may use documents, key-value pairs, graphs, or flexible structures." },
+      { n: 50, topic: "ERD, EERD, SQL Checking, and NoSQL", q: "Why did you choose SQL/MySQL instead of NoSQL?", a: "We chose MySQL because ADAMS data is structured and relationship-based. The project needs tables, keys, joins, normalization, and relational integrity, which are better handled by MySQL." }
+    ];
+
+    let state = {
+      mode: 'list',
+      index: 0,
+      order: questions.map((_, i) => i),
+      score: 0,
+      attempts: 0,
+      flashShowingAnswer: false,
+      mcqAnswered: false,
+      currentOptions: []
+    };
+
+    const app = document.getElementById('app');
+    const modeButtons = document.getElementById('modeButtons');
+    const searchBox = document.getElementById('searchBox');
+    const topicFilter = document.getElementById('topicFilter');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const modeLabel = document.getElementById('modeLabel');
+    const countLabel = document.getElementById('countLabel');
+    const scoreLabel = document.getElementById('scoreLabel');
+    const progressFill = document.getElementById('progressFill');
+
+    function clean(str) {
+      return str.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+    }
+
+    function getFilteredIndexes() {
+      const term = clean(searchBox.value || '');
+      const topic = topicFilter.value;
+      return state.order.filter(i => {
+        const item = questions[i];
+        const topicMatch = topic === 'all' || item.topic === topic;
+        const searchMatch = !term || clean(item.q + ' ' + item.a + ' ' + item.topic).includes(term);
+        return topicMatch && searchMatch;
+      });
+    }
+
+    function currentItem() {
+      const indexes = getFilteredIndexes();
+      if (!indexes.length) return null;
+      if (state.index >= indexes.length) state.index = 0;
+      return questions[indexes[state.index]];
+    }
+
+    function updateStats() {
+      const indexes = getFilteredIndexes();
+      const modeNames = {
+        list: 'Question List', blank: 'Fill in the Blanks', written: 'Written Answer', mcq: 'Multiple Choice', flashcard: 'Flashcards'
+      };
+      modeLabel.textContent = 'Mode: ' + modeNames[state.mode];
+      countLabel.textContent = indexes.length + ' of 50 questions shown';
+      scoreLabel.textContent = 'Score: ' + state.score + ' / ' + state.attempts;
+      const pct = indexes.length ? ((state.index + 1) / indexes.length) * 100 : 0;
+      progressFill.style.width = state.mode === 'list' ? '100%' : Math.min(100, pct) + '%';
+    }
+
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+    }
+
+    function render() {
+      updateStats();
+      if (state.mode === 'list') return renderList();
+      if (state.mode === 'blank') return renderBlank();
+      if (state.mode === 'written') return renderWritten();
+      if (state.mode === 'mcq') return renderMCQ();
+      if (state.mode === 'flashcard') return renderFlashcard();
+    }
+
+    function renderList() {
+      const indexes = getFilteredIndexes();
+      if (!indexes.length) {
+        app.innerHTML = `<div class="card"><p>No questions found. Try another search or topic.</p></div>`;
+        return;
+      }
+      app.innerHTML = `<div class="card"><span class="q-number">All Questions</span><p class="question">Tap any question to show/hide the safe answer.</p>${indexes.map(i => {
+        const item = questions[i];
+        return `<div class="list-item">
+          <div class="list-question" onclick="toggleAnswer(${item.n})"><span>${item.n}. ${escapeHTML(item.q)}</span><span>+</span></div>
+          <div class="list-answer hidden" id="ans-${item.n}"><strong>Answer:</strong> ${escapeHTML(item.a)}<div class="pill-row"><span class="pill">${escapeHTML(item.topic)}</span></div></div>
+        </div>`;
+      }).join('')}</div>`;
+    }
+
+    window.toggleAnswer = function(n) {
+      const ans = document.getElementById('ans-' + n);
+      if (ans) ans.classList.toggle('hidden');
+    };
+
+    function navButtons() {
+      const indexes = getFilteredIndexes();
+      return `<div class="actions">
+        <button onclick="prevQuestion()" ${indexes.length <= 1 ? 'disabled' : ''}>Previous</button>
+        <button onclick="nextQuestion()" class="primary" ${indexes.length <= 1 ? 'disabled' : ''}>Next</button>
+      </div>`;
+    }
+
+    window.prevQuestion = function() {
+      const indexes = getFilteredIndexes();
+      state.index = (state.index - 1 + indexes.length) % indexes.length;
+      resetQuestionState();
+      render();
+    };
+
+    window.nextQuestion = function() {
+      const indexes = getFilteredIndexes();
+      state.index = (state.index + 1) % indexes.length;
+      resetQuestionState();
+      render();
+    };
+
+    function resetQuestionState() {
+      state.flashShowingAnswer = false;
+      state.mcqAnswered = false;
+      state.currentOptions = [];
+    }
+
+    function renderStudyShell(inner) {
+      const item = currentItem();
+      const indexes = getFilteredIndexes();
+      if (!item) {
+        app.innerHTML = `<div class="card"><p>No questions found. Try another search or topic.</p></div>`;
+        return;
+      }
+      app.innerHTML = `<div class="study-card">
+        <div>
+          <span class="q-number">Question ${state.index + 1} of ${indexes.length} | Original No. ${item.n}</span>
+          <div class="pill-row"><span class="pill">${escapeHTML(item.topic)}</span></div>
+          ${inner(item)}
+        </div>
+        ${navButtons()}
+      </div>`;
+    }
+
+    function makeBlanks(answer) {
+      const keyWords = [
+        'Database Management System','MySQL','RDBMS','Relational Database Management System','Structured Query Language',
+        'primary key','foreign key','referential integrity','normalization','Unnormalized Form','1NF','2NF','3NF',
+        'bridge table','many-to-many','one-to-many','cardinality','Entity Relationship Diagram','Enhanced Entity Relationship Diagram',
+        'specialization','data dictionary','SHOW TABLES','DESCRIBE','SELECT','DDL','DML','DQL','CREATE','ALTER','DROP','INSERT','UPDATE','DELETE'
+      ];
+      let selected = [];
+      let text = answer;
+      keyWords.forEach(word => {
+        const re = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+        if (re.test(text) && selected.length < 3) selected.push(word);
+      });
+      if (!selected.length) {
+        selected = answer.split(/\s+/).filter(w => w.length > 7).slice(0, 3).map(w => w.replace(/[^a-zA-Z0-9_/-]/g, ''));
+      }
+      selected.forEach(word => {
+        if (!word) return;
+        const re = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        text = text.replace(re, `<span class="blank-line">${escapeHTML(word)}</span>`);
+      });
+      return { text, selected };
+    }
+
+    function renderBlank() {
+      renderStudyShell(item => {
+        const blank = makeBlanks(item.a);
+        return `<p class="question">${escapeHTML(item.q)}</p>
+          <div class="blank-text">${blank.text}</div>
+          <input type="text" id="blankInput" placeholder="Type the missing word/s. Example: primary key, foreign key" />
+          <div class="actions" style="justify-content:flex-start;margin-top:10px;">
+            <button class="primary" onclick="checkBlank(${item.n})">Check Answer</button>
+            <button onclick="showBlankAnswer(${item.n})">Show Answer</button>
+          </div>
+          <div id="blankFeedback"></div>`;
+      });
+    }
+
+    window.checkBlank = function(n) {
+      const item = questions.find(x => x.n === n);
+      const blank = makeBlanks(item.a);
+      const input = clean(document.getElementById('blankInput').value);
+      const ok = blank.selected.some(word => input.includes(clean(word))) || clean(item.a).includes(input) && input.length > 4;
+      state.attempts++;
+      if (ok) state.score++;
+      document.getElementById('blankFeedback').innerHTML = `<div class="feedback ${ok ? 'good' : 'bad'}">${ok ? 'Correct / close enough.' : 'Not quite yet.'}<br><strong>Missing answer/s:</strong> ${blank.selected.map(escapeHTML).join(', ')}<br><strong>Full answer:</strong> ${escapeHTML(item.a)}</div>`;
+      updateStats();
+    };
+
+    window.showBlankAnswer = function(n) {
+      const item = questions.find(x => x.n === n);
+      document.getElementById('blankFeedback').innerHTML = `<div class="feedback neutral"><strong>Answer:</strong> ${escapeHTML(item.a)}</div>`;
+    };
+
+    function renderWritten() {
+      renderStudyShell(item => {
+        return `<p class="question">${escapeHTML(item.q)}</p>
+          <textarea id="writtenInput" placeholder="Write your answer here first. Then click Show Model Answer to compare."></textarea>
+          <div class="actions" style="justify-content:flex-start;margin-top:10px;">
+            <button class="primary" onclick="showWrittenAnswer(${item.n})">Show Model Answer</button>
+            <button class="good" onclick="markWritten(true)">I got it right</button>
+            <button class="danger" onclick="markWritten(false)">Need more practice</button>
+          </div>
+          <div id="writtenFeedback"></div>`;
+      });
+    }
+
+    window.showWrittenAnswer = function(n) {
+      const item = questions.find(x => x.n === n);
+      const typed = document.getElementById('writtenInput').value.trim();
+      document.getElementById('writtenFeedback').innerHTML = `<div class="answer"><strong>Your answer:</strong><br>${typed ? escapeHTML(typed) : '<em>No answer typed yet.</em>'}<br><br><strong>Model answer:</strong><br>${escapeHTML(item.a)}</div>`;
+    };
+
+    window.markWritten = function(correct) {
+      state.attempts++;
+      if (correct) state.score++;
+      updateStats();
+      const box = document.getElementById('writtenFeedback');
+      box.innerHTML += `<div class="feedback ${correct ? 'good' : 'bad'}">Marked as ${correct ? 'correct' : 'needs more practice'}.</div>`;
+    };
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function generateOptions(item) {
+      if (state.currentOptions.length) return state.currentOptions;
+      const distractors = questions
+        .filter(x => x.n !== item.n && x.topic === item.topic)
+        .map(x => x.a);
+      const fallback = questions.filter(x => x.n !== item.n).map(x => x.a);
+      const pool = distractors.length >= 3 ? distractors : fallback;
+      state.currentOptions = shuffleArray([item.a, ...shuffleArray(pool).slice(0, 3)]);
+      return state.currentOptions;
+    }
+
+    function renderMCQ() {
+      renderStudyShell(item => {
+        const options = generateOptions(item);
+        return `<p class="question">${escapeHTML(item.q)}</p>
+          <div id="mcqOptions">${options.map((opt, idx) => `<button class="option" onclick="checkMCQ(${item.n}, ${idx})">${String.fromCharCode(65 + idx)}. ${escapeHTML(opt)}</button>`).join('')}</div>
+          <div id="mcqFeedback"></div>`;
+      });
+    }
+
+    window.checkMCQ = function(n, idx) {
+      if (state.mcqAnswered) return;
+      const item = questions.find(x => x.n === n);
+      const buttons = [...document.querySelectorAll('.option')];
+      const chosen = state.currentOptions[idx];
+      const ok = chosen === item.a;
+      state.mcqAnswered = true;
+      state.attempts++;
+      if (ok) state.score++;
+      buttons.forEach((btn, bIdx) => {
+        if (state.currentOptions[bIdx] === item.a) btn.classList.add('correct');
+        else if (bIdx === idx) btn.classList.add('wrong');
+        btn.disabled = true;
+      });
+      document.getElementById('mcqFeedback').innerHTML = `<div class="feedback ${ok ? 'good' : 'bad'}">${ok ? 'Correct!' : 'Incorrect.'}<br><strong>Answer:</strong> ${escapeHTML(item.a)}</div>`;
+      updateStats();
+    };
+
+    function renderFlashcard() {
+      const item = currentItem();
+      renderStudyShell(item => {
+        const content = state.flashShowingAnswer
+          ? `<div><div class="small"><strong>Answer</strong><br><br>${escapeHTML(item.a)}</div></div>`
+          : `<div><div class="big">${escapeHTML(item.q)}</div><p style="color:#64748b;margin-top:18px;">Tap the card to reveal the answer.</p></div>`;
+        return `<div class="flashcard-box" onclick="flipCard()">${content}</div>
+          <div class="actions" style="margin-top:12px;">
+            <button class="good" onclick="event.stopPropagation(); markFlash(true);">I know this</button>
+            <button class="danger" onclick="event.stopPropagation(); markFlash(false);">Review again</button>
+          </div>`;
+      });
+    }
+
+    window.flipCard = function() {
+      state.flashShowingAnswer = !state.flashShowingAnswer;
+      render();
+    };
+
+    window.markFlash = function(correct) {
+      state.attempts++;
+      if (correct) state.score++;
+      updateStats();
+      nextQuestion();
+    };
+
+    modeButtons.addEventListener('click', e => {
+      if (!e.target.matches('button')) return;
+      state.mode = e.target.dataset.mode;
+      state.index = 0;
+      resetQuestionState();
+      [...modeButtons.querySelectorAll('button')].forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      render();
+    });
+
+    searchBox.addEventListener('input', () => { state.index = 0; resetQuestionState(); render(); });
+    topicFilter.addEventListener('change', () => { state.index = 0; resetQuestionState(); render(); });
+
+    shuffleBtn.addEventListener('click', () => {
+      state.order = shuffleArray(questions.map((_, i) => i));
+      state.index = 0;
+      resetQuestionState();
+      render();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      state.score = 0;
+      state.attempts = 0;
+      state.index = 0;
+      state.order = questions.map((_, i) => i);
+      resetQuestionState();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
